@@ -1,9 +1,53 @@
+---
+title: "Stat342-Lab1"
+author: "Ben Liu"
+date: "2025-02-21"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+# Question 1 
+
+The simulated/emperical probability that $A$ wins the game given values of $N$ is: 
+
+
+$N=20: 0.388$
+
+$N=100: 0.111$
+
+$N=200: 0.018$
+
+
+
+# Question 2
+
+
+The probability that $A$ wins the game given values of $N$ is:
+
+$N=20: 0.4013$
+
+$N=100: 0.1192$
+
+$N=200: 0.01798$ 
+
+
+
+
+```{python}
 import math
 import random 
 
-random.seed(42)  # You can use any integer value as the seed
 
-def run_simulation(num_games):
+
+random.seed(21)
+
+
+def run_simulation_question1(num_games):
 
     playerAwins = 0 
     playerBwins = 0 
@@ -20,7 +64,7 @@ def run_simulation(num_games):
 
 
 def play_game(): 
-    n = 200 
+    n = 20 
     i = n/2
     p = 0.49 
     while(i > 0 and i < n):
@@ -34,8 +78,8 @@ def play_game():
 
 def play_round(prob): # i is the amount of money player 1 has, j is the amount of money player 2 has
 
-# return true if player 1 wins, 
-# return false if player 2 wins 
+    # return true if player 1 wins, 
+    # return false if player 2 wins 
     # generate a random number between 0 and 1 
     r = random.random()
 
@@ -46,14 +90,13 @@ def play_round(prob): # i is the amount of money player 1 has, j is the amount o
     
 
 
-
-
-
 if __name__ == "__main__":
 
-    run_simulation(1000)
+    run_simulation_question1(1000)
+
+```
 
 
-
+# Question 3 
 
 
