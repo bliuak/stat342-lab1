@@ -132,9 +132,9 @@ def q4b_plot():
 
     plt.figure(figsize=(10, 6))
     plt.plot(startingAmounts, average_game_length, '-b', label='Average game length')
-    plt.xlabel('Starting amount')
-    plt.ylabel('Average game length')
-    plt.title('Average game length vs. starting amount')
+    plt.xlabel('Starting Amount for A ($)')
+    plt.ylabel('Average Game Length')
+    plt.title('Average Game Length (over 1000 trials) vs. Starting Amount')
     plt.legend()
     plt.grid(True)
     plt.show()
