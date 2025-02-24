@@ -221,37 +221,7 @@ import math
 import random 
 import matplotlib.pyplot as plt 
 
-def run_simulation(num_games):
-
-    playerAwins = 0 
-    playerBwins = 0 
-    for i in range(num_games):
-        if play_game(initial_amount=10, total_dollars=20, p=0.49): 
-            playerAwins += 1 
-        else: 
-            playerBwins += 1 
-
-    print(f"Player A wins {playerAwins} times")
-    print(f"Player B wins {playerBwins} times")
-
-    print(f"Probability that player A wins: {playerAwins/num_games}")
-
-
-def play_game(initial_amount, total_dollars, p): 
-    n = total_dollars
-    i = initial_amount
-    rounds = 0
-    
-    while(i > 0 and i < n):
-        rounds += 1 
-        if play_round(p): 
-            i += 1 
-        else: 
-            i -= 1 
-        
-    
-    return i == n, rounds  # true if player A wins, false if player B wins 
-
+random.seed(21)
 
 def play_round(prob): # i = player 1's money, j = player 2's money
 
@@ -264,7 +234,6 @@ def play_round(prob): # i = player 1's money, j = player 2's money
         return True
     else:
         return False
-      
       
 def q4a_plot():
     n=20
@@ -281,8 +250,8 @@ def q4a_plot():
             i += 1 
         else: 
             i -= 1 
-            i_values.append(i)
-            round_numbers.append(rounds)
+        i_values.append(i)
+        round_numbers.append(rounds)
     
     plt.figure(figsize=(10, 6))
     plt.plot(round_numbers, i_values, '-b', label='Player A money')
@@ -306,21 +275,7 @@ import math
 import random 
 import matplotlib.pyplot as plt 
 
-def run_simulation(num_games):
-
-    playerAwins = 0 
-    playerBwins = 0 
-    for i in range(num_games):
-        if play_game(initial_amount=10, total_dollars=20, p=0.49): 
-            playerAwins += 1 
-        else: 
-            playerBwins += 1 
-
-    print(f"Player A wins {playerAwins} times")
-    print(f"Player B wins {playerBwins} times")
-
-    print(f"Probability that player A wins: {playerAwins/num_games}")
-
+random.seed(21)
 
 def play_game(initial_amount, total_dollars, p): 
     n = total_dollars
@@ -337,6 +292,7 @@ def play_game(initial_amount, total_dollars, p):
     
     return i == n, rounds  # true if player A wins, false if player B wins 
 
+random.seed(21)
 
 def play_round(prob): # i = player 1's money, j = player 2's money
 
