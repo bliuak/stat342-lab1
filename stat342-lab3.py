@@ -13,7 +13,11 @@ def main():
 
     #random_walk_q3(1000)
 
-    random_walk_q4(1000, 0.5, 1.5)
+    # Lowkey don't know if this is correct
+    random_walk_q4(1000, 0.25, 2)
+
+    # Scale seems to be off
+    random_walk_q5(1000, 0.01)
 
 
 def random_walk_q1(n): 
@@ -165,6 +169,40 @@ def random_walk_q4(num_simulations, variance1, variance2=None):
     plt.grid(True)
     plt.legend()
     plt.show()
+
+def random_walk_q5(n, mean): 
+    plt.figure(figsize=(12, 8))  # Create a figure to hold all plots
+    
+    for sim in range(10):  # Run 10 simulations
+        stepsize = 1/np.sqrt(n)
+        x = np.zeros(n)
+        y = np.zeros(n)
+
+        for i in range(n):
+            x[i] = i
+            if i == 0:
+                y[i] = 0
+            else: 
+                y[i] = y[i-1] + np.random.choice([-1,1])*stepsize + (mean * i / n)
+
+        # Plot this specific walk on the figure
+        plt.plot(x, y, alpha=0.5)
+        
+    for i in range(n):
+        x[i] = 1
+        if i == 0:
+            y[i] = 0
+        else: 
+            y[i] = y[i-1] + (mean * i / n)
+    
+    plt.plot(x, y, 'k-', label=f'Mean = {mean}')
+
+    plt.title(f"10 Random Walks with Mean {mean} (n={n} steps)")
+    plt.xlabel("Step Number (Time)")
+    plt.ylabel("Position (Y)")
+    plt.grid(True)
+    plt.show()
+
 
 if __name__ == "__main__":
     np.random.seed(123)
