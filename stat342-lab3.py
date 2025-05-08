@@ -11,7 +11,11 @@ def main():
     # Run Q2: 100 simulations with n=1000
     #random_walk_q2(100)
 
-    random_walk_q3(1000)
+    #random_walk_q3(1000)
+
+    random_walk_q4(1000, 0.5, 1.5)
+
+
 def random_walk_q1(n): 
 
     stepsize = 1/np.sqrt(n)
@@ -124,6 +128,41 @@ def random_walk_q3(num_simulations):
     plt.title('Distribution of B(1)')
     plt.xlabel('Value')
     plt.ylabel('Frequency')
+    plt.legend()
+    plt.show()
+
+def random_walk_q4(num_simulations, variance1, variance2=None): 
+    x = np.zeros(num_simulations)
+    y1 = np.zeros(num_simulations)
+    y2 = np.zeros(num_simulations)
+
+    # Generate first random walk
+    for i in range(num_simulations):
+        x[i] = i
+        if i == 0:
+            y1[i] = 0
+        else: 
+            y1[i] = y1[i-1] + np.random.normal(0, np.sqrt(variance1/num_simulations))
+
+    # If second variance is provided, generate second random walk
+    # If not, only plot the first random walk
+    if variance2 is not None:
+        for i in range(num_simulations):
+            if i == 0:
+                y2[i] = 0
+            else: 
+                y2[i] = y2[i-1] + np.random.normal(0, np.sqrt(variance2/num_simulations))
+
+    # Plot both paths on the same graph
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, y1, 'b-', label=f'σ² = {variance1}')
+    if variance2 is not None:
+        plt.plot(x, y2, 'r-', label=f'σ² = {variance2}')
+    
+    plt.title(f"Comparison of Random Walks with Different Variances (n={num_simulations} steps)")
+    plt.xlabel("Step Number (Time)")
+    plt.ylabel("Position (Y)")
+    plt.grid(True)
     plt.legend()
     plt.show()
 
