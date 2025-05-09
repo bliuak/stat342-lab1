@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\title{STAT 342 Lab 3 Questions}
+\author{Ben Liu}
+\date{May 2025}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\La}{\lambda}
+\newcommand{\Mod}[1]{\ \mathrm{mod}\ #1}
+\newcommand{\bi}{\bigbreak \noindent}
+\newcommand{\proof}{\bi \textbf{Solution. }}
+\begin{document}
+
+\maketitle
+
+\section{Problem 1}
+Let $G(t)$ be geometric Brownian motion: $G(t)=G(0)e^{\mu t + \sigma B(t)}$ where $B(t)$ 
+is standard Brownian motion and $B(0)=0$. We find the value $m$ such that 
+$P(G(t)< m)=0.05$. 
+
+\proof 
+We have that 
+$$lnG(t)=ln(G(0))+\mu t + \sigma B(t)\sim N(ln(G(0))+\mu t, \sigma^2 t)$$
+then 
+$$P(G(t)< m)= 0.05$$
+$$\Rightarrow P(\ln G(t) < \ln m) = \Phi(\frac{\ln m - [\ln(G(0))+\mu t]}{\sigma \sqrt{t}})$$
+$$=0.05$$
+$$\Rightarrow \frac{\ln m - [\ln(G(0))+\mu t]}{\sigma \sqrt{t}}=-1.645$$
+$$\ln m -[\ln(G(0)) + \mu t]=-1.645\sigma \sqrt{t}$$
+$$\Rightarrow \ln m = \ln(G(0))+\mu t -1.645\sigma \sqrt{t}$$
+$$\Rightarrow m = G(0)e^{\mu t -1.645\sigma \sqrt{t}}$$
+
+\section{Problem 2}
+Suppose the price fluctuations of a stock are well described by absorbed Brownian motion, 
+and a company is considered bankrupt if the share drops to zero. If $A(0)=5$, what 
+the probability the company is bankrupt at $t=25$? 
+
+\proof We find 
+$$P(A(25)\leq 0 | A(0)=5)=1-P(A(25)>0 | A(0)=5)=1-G_t(5,0)$$
+$$=1-[2\Phi(\frac{-5}{\sqrt{25}})-1]$$
+$$=2\Phi(-1)$$
+$$=2(0.15866)$$
+$$\approx 0.3173$$
+\section{Problem 3} 
+In a bicycle race between two competitors, let 
+$Y(t)$ denote the amount of time in seconds 
+by which the racer started in the inside position 
+is ahead when $100t$ percent of the race has been completed
+and suppose that $\{Y(t), 0\leq t\leq 1\}$ can be effectively
+modeled as a Brownian motion process with variance
+parameter $\sigma^2$. 
+\bi
+If the inside racer is leading by 
+$\sigma$ seconds at the midpoint of the 
+race, what is the probability that she is the winner?
+\bi
+We have that $Y(0.5)=\sigma$. We find the probability that 
+$$P(Y(1)>0 | Y(0.5)=\sigma)$$
+We have that $Y(1)-Y(0.5)\sim N(0,\sigma^2/2)$ 
+Therefore, 
+$$P(Y(1)>0 | Y(0.5)=P(Y(0.5)+[Y(1)-Y(0.5)]>0))$$
+$$=P(\sigma + [Y(1)-Y(0.5)] > 0)$$
+$$=P(Y(1)-Y(0.5)>-\sigma)$$
+standardizing $Y(1)-Y(0.5)$, we have that 
+$$P(Z > -\sqrt{2})=1-\Phi(-\sqrt{2})=\Phi(\sqrt{2})$$
+$$\approx 0.921$$
+
+
+\bi If the inside racer wins the race by a margin of $\sigma$ 
+seconds, what is the probability that she was ahead at the 
+midpoint? 
+
+\proof We note that $Y(t)=\sigma B(t)$. So we have that 
+$$P(Y(0.5)>0 | Y(1)=\sigma) = P(\sigma B(0.5)> 0 | \sigma B(1)=\sigma) $$
+$$=P(B(0.5)>0 | B(1)=1)$$
+Since for $B(s)|B(t)$ for $0<s<t$ we have that $B(s)|B(t)=b\sim N(\frac{s}{t}b, \frac{s(t-s)}{t})$, 
+then 
+$$B(0.5)|B(1)=1\sim N(\frac{1}{2}, \frac{1}{4})$$
+Then 
+$$P(Z>\frac{0-\frac{1}{2}}{\sqrt{\frac{1}{4}}})$$
+$$=P(Z>-1)$$
+$$=1-\Phi(Z\leq -1)$$
+$$1-\Phi(-1)\approx 0.8413$$
+
+
+
+
+
+
+
+\end{document}
