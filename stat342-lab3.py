@@ -56,19 +56,13 @@ def random_walk_q2(num_simulations):
         x = np.zeros(n)
         y = np.zeros(n)
 
-        # Perform the random walk calculation
         for i in range(n):
             x[i] = i
             if i > 0:
-                # Calculate next step based on previous position
                 y[i] = y[i-1] + np.random.choice([-1, 1]) * stepsize
-            # y[0] remains 0 (initial position)
 
-        # Plot this specific walk on the figure
-        # Matplotlib cycles colors automatically
-        plt.plot(x, y, alpha=0.5) # Use alpha for better visibility with many lines
+        plt.plot(x, y, alpha=0.5) 
 
-    # Configure and display the final plot after all simulations are plotted
     plt.title(f"{num_simulations} Random Walks (n={n} steps)")
     plt.xlabel("Step Number (Time)")
     plt.ylabel("Position (Y)")
@@ -77,34 +71,26 @@ def random_walk_q2(num_simulations):
 
 def random_walk_q3(num_simulations):
 
-    n = 1000  # Fixed number of steps
+    n = 1000  
     stepsize = 1 / np.sqrt(n)
 
     # Array to store the y-position of each simulation at each step
     all_y_positions = np.zeros((num_simulations, n))
 
-    # x values (time steps) are the same for all simulations
     x_steps = np.arange(n)
 
     for sim_index in range(num_simulations):
-        # Initialize y position array for this simulation
         y = np.zeros(n)
 
-        # Perform the random walk calculation
-        for i in range(1, n): # Start from step 1
-            # Calculate next step based on previous position
+        for i in range(1, n): 
             y[i] = y[i-1] + np.random.choice([-1, 1]) * stepsize
         
-        # Store the y-path of this simulation
         all_y_positions[sim_index, :] = y
 
-    # Calculate the variance across simulations for each time step
     empirical_variances = np.var(all_y_positions, axis=0)
     
-    # Calculate theoretical variance: i * stepsize^2
     theoretical_variances = x_steps * (stepsize**2)
 
-    # Plot the empirical and theoretical variance over time
     plt.figure(figsize=(12, 8))
     plt.plot(x_steps, empirical_variances, label='Empirical Variance')
     plt.plot(x_steps, theoretical_variances, label='Theoretical Variance (t/n)', linestyle='--')
@@ -116,21 +102,15 @@ def random_walk_q3(num_simulations):
     plt.grid(True)
     plt.show()
     
-    # --- Covariance Calculation ---
     idx1, idx2 = 300, 600
     if n > idx1 and n > idx2:
-        # Extract positions at the specified steps
         y_at_idx1 = all_y_positions[:, idx1]
         y_at_idx2 = all_y_positions[:, idx2]
-
-        # -- Method 1: Using np.cov (Population Covariance, ddof=0) --
         cov_matrix = np.cov(y_at_idx1, y_at_idx2, ddof=0)
-        empirical_covariance_np = cov_matrix[0, 1] # or cov_matrix[1, 0]
-
+        empirical_covariance_np = cov_matrix[0, 1] 
 
         print(f"Empirical Covariance (s=0.3, t=0.6): {empirical_covariance_np:.6f}")
     
-    # We now plot the distribution of B(1). 
     plt.figure(figsize=(12, 8))
     plt.hist(all_y_positions[:, -1], bins=30, density=True, alpha=0.7, label='B(1)')
     plt.title('Distribution of B(1)')
@@ -144,7 +124,6 @@ def random_walk_q4(num_simulations, variance1, variance2=None):
     y1 = np.zeros(num_simulations)
     y2 = np.zeros(num_simulations)
 
-    # Generate first random walk
     for i in range(num_simulations):
         x[i] = i
         if i == 0:
@@ -152,8 +131,6 @@ def random_walk_q4(num_simulations, variance1, variance2=None):
         else: 
             y1[i] = y1[i-1] + np.random.normal(0, np.sqrt(variance1/num_simulations))
 
-    # If second variance is provided, generate second random walk
-    # If not, only plot the first random walk
     if variance2 is not None:
         for i in range(num_simulations):
             if i == 0:
@@ -161,7 +138,6 @@ def random_walk_q4(num_simulations, variance1, variance2=None):
             else: 
                 y2[i] = y2[i-1] + np.random.normal(0, np.sqrt(variance2/num_simulations))
 
-    # Plot both paths on the same graph
     plt.figure(figsize=(10, 6))
     plt.plot(x, y1, 'b-', label=f'σ² = {variance1}')
     if variance2 is not None:
@@ -175,9 +151,9 @@ def random_walk_q4(num_simulations, variance1, variance2=None):
     plt.show()
 
 def random_walk_q5(n, mean): 
-    plt.figure(figsize=(12, 8))  # Create a figure to hold all plots
+    plt.figure(figsize=(12, 8))  
     
-    for sim in range(10):  # Run 10 simulations
+    for sim in range(10):
         x = np.zeros(n)
         y = np.zeros(n)
 
@@ -189,10 +165,8 @@ def random_walk_q5(n, mean):
                 # Standard Brownian motion increment + drift term
                 y[i] = y[i-1] + np.random.normal(0, 1/np.sqrt(n)) + (mean/n)
 
-        # Plot this specific walk on the figure
         plt.plot(x, y, alpha=0.5)
     
-    # Plot the expected value line E[Y(t)] = μt
     expected_line = mean * x/n
     plt.plot(x, expected_line, 'k-', linewidth=2, label=f'E[Y(t)] = {mean}t')
     
@@ -214,14 +188,10 @@ def random_walk_q6(n, alpha, sigma):
             y[i] = 1  # G(0) = 1
             B[i] = 0
         else: 
-            # Generate standard Brownian motion increment
             B[i] = B[i-1] + np.random.normal(0, 1/np.sqrt(n))
-            # Calculate Geometric Brownian motion
             y[i] = np.exp((alpha - 0.5 * sigma**2) * (i/n) + sigma * B[i])
 
     plt.plot(x, y, 'b-')
-
-    # Plot the expected value line E[G(t)] = G(0)e^(αt)
     expected_line = np.exp(alpha * x/n)
     plt.plot(x, expected_line, 'k-', linewidth=2, label=f'E[G(t)] = e^({alpha}t)')
     
@@ -233,48 +203,39 @@ def random_walk_q6(n, alpha, sigma):
     plt.show()
 
 def random_walk_q7(n): 
-    # Initialize arrays for both coordinates
     x = np.zeros(n)
     y = np.zeros(n)
     
-    # Generate two independent standard Brownian motions
     for i in range(1, n):
-        # Generate independent increments for both coordinates
         x[i] = x[i-1] + np.random.normal(0, 1/np.sqrt(n))
         y[i] = y[i-1] + np.random.normal(0, 1/np.sqrt(n))
     
-    # Plot the 2D path
     plt.figure(figsize=(10, 10))
     plt.plot(x, y, 'b-', alpha=0.7)
-    plt.plot(x[0], y[0], 'go', label='Start')  # Mark the start point
-    plt.plot(x[-1], y[-1], 'ro', label='End')  # Mark the end point
+    plt.plot(x[0], y[0], 'go', label='Start')  
+    plt.plot(x[-1], y[-1], 'ro', label='End')  
     
     plt.title(f"2D Brownian Motion Path (n={n} steps)")
     plt.xlabel("X(t)")
     plt.ylabel("Y(t)")
     plt.grid(True)
     plt.legend()
-    plt.axis('equal')  # Make the plot square to show true distances
+    plt.axis('equal')  
     plt.show()
 
 def random_walk_q8(n): 
-    # Initialize arrays for all coordinates
     x = np.zeros(n)
     y = np.zeros(n)
     z = np.zeros(n)
     
-    # Generate three independent standard Brownian motions
     for i in range(1, n):
-        # Generate independent increments for all coordinates
         x[i] = x[i-1] + np.random.normal(0, 1/np.sqrt(n))
         y[i] = y[i-1] + np.random.normal(0, 1/np.sqrt(n))
         z[i] = z[i-1] + np.random.normal(0, 1/np.sqrt(n))
     
-    # Create 3D plot
     fig = plt.figure(figsize=(12, 12))
     ax = fig.add_subplot(111, projection='3d')
     
-    # Plot the 3D path
     ax.plot(x, y, z, 'b-', alpha=0.7)
     ax.scatter(x[0], y[0], z[0], color='green', s=100, label='Start')
     ax.scatter(x[-1], y[-1], z[-1], color='red', s=100, label='End')
