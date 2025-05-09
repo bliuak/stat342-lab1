@@ -37,22 +37,20 @@ def random_walk_q1(n):
         else: 
             y[i] += np.random.choice([-1,1])*stepsize + y[i-1]
 
-    # Plot the complete path outside the loop
-    plt.plot(x, y, 'b-') # Plot x vs y as a continuous blue line
-    plt.title(f"1D Random Walk ({n} steps)") # Add a title
-    plt.xlabel("Step Number (Time)") # Label x-axis
-    plt.ylabel("Position (Y)") # Label y-axis
-    plt.grid(True) # Add a grid
+    plt.plot(x, y, 'b-') 
+    plt.title(f"1D Random Walk ({n} steps)") 
+    plt.xlabel("Step Number (Time)") 
+    plt.ylabel("Position (Y)") 
+    plt.grid(True) 
     plt.show()
 
 def random_walk_q2(num_simulations):
-    n = 1000  # Fixed number of steps
+    n = 1000  
     stepsize = 1 / np.sqrt(n)
 
-    plt.figure(figsize=(12, 8))  # Create a figure to hold all plots
+    plt.figure(figsize=(12, 8))  
 
     for _ in range(num_simulations):
-        # Initialize position arrays for this simulation
         x = np.zeros(n)
         y = np.zeros(n)
 
@@ -74,7 +72,6 @@ def random_walk_q3(num_simulations):
     n = 1000  
     stepsize = 1 / np.sqrt(n)
 
-    # Array to store the y-position of each simulation at each step
     all_y_positions = np.zeros((num_simulations, n))
 
     x_steps = np.arange(n)
