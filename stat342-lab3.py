@@ -16,9 +16,13 @@ def main():
     # Lowkey don't know if this is correct
     random_walk_q4(1000, 0.25, 2)
 
-    # Scale seems to be off
-    random_walk_q5(1000, 0.01)
+    random_walk_q5(1000, 0.5)
 
+    random_walk_q6(1000, 0.1, 0.2)  # Example values for α and σ
+
+    random_walk_q7(1000)  # Generate a 2D Brownian motion with 1000 steps
+
+    random_walk_q8(1000)  # Generate a 3D Brownian motion with 1000 steps
 
 def random_walk_q1(n): 
 
@@ -174,7 +178,6 @@ def random_walk_q5(n, mean):
     plt.figure(figsize=(12, 8))  # Create a figure to hold all plots
     
     for sim in range(10):  # Run 10 simulations
-        stepsize = 1/np.sqrt(n)
         x = np.zeros(n)
         y = np.zeros(n)
 
@@ -183,26 +186,106 @@ def random_walk_q5(n, mean):
             if i == 0:
                 y[i] = 0
             else: 
-                y[i] = y[i-1] + np.random.choice([-1,1])*stepsize + (mean * i / n)
+                # Standard Brownian motion increment + drift term
+                y[i] = y[i-1] + np.random.normal(0, 1/np.sqrt(n)) + (mean/n)
 
         # Plot this specific walk on the figure
         plt.plot(x, y, alpha=0.5)
-        
-    for i in range(n):
-        x[i] = 1
-        if i == 0:
-            y[i] = 0
-        else: 
-            y[i] = y[i-1] + (mean * i / n)
     
-    plt.plot(x, y, 'k-', label=f'Mean = {mean}')
-
-    plt.title(f"10 Random Walks with Mean {mean} (n={n} steps)")
-    plt.xlabel("Step Number (Time)")
-    plt.ylabel("Position (Y)")
+    # Plot the expected value line E[Y(t)] = μt
+    expected_line = mean * x/n
+    plt.plot(x, expected_line, 'k-', linewidth=2, label=f'E[Y(t)] = {mean}t')
+    
+    plt.title(f"Brownian Motion with Drift (μ = {mean}, σ² = 1)")
+    plt.xlabel("Time (t)")
+    plt.ylabel("Position Y(t)")
     plt.grid(True)
+    plt.legend()
     plt.show()
 
+def random_walk_q6(n, alpha, sigma): 
+    x = np.zeros(n)
+    y = np.zeros(n)
+    B = np.zeros(n)
+
+    for i in range(n):
+        x[i] = i
+        if i == 0:
+            y[i] = 1  # G(0) = 1
+            B[i] = 0
+        else: 
+            # Generate standard Brownian motion increment
+            B[i] = B[i-1] + np.random.normal(0, 1/np.sqrt(n))
+            # Calculate Geometric Brownian motion
+            y[i] = np.exp((alpha - 0.5 * sigma**2) * (i/n) + sigma * B[i])
+
+    plt.plot(x, y, 'b-')
+
+    # Plot the expected value line E[G(t)] = G(0)e^(αt)
+    expected_line = np.exp(alpha * x/n)
+    plt.plot(x, expected_line, 'k-', linewidth=2, label=f'E[G(t)] = e^({alpha}t)')
+    
+    plt.title(f"Geometric Brownian Motion (α = {alpha}, σ = {sigma})")
+    plt.xlabel("Time (t)")
+    plt.ylabel("G(t)")
+    plt.grid(True)
+    plt.legend()
+    plt.show()
+
+def random_walk_q7(n): 
+    # Initialize arrays for both coordinates
+    x = np.zeros(n)
+    y = np.zeros(n)
+    
+    # Generate two independent standard Brownian motions
+    for i in range(1, n):
+        # Generate independent increments for both coordinates
+        x[i] = x[i-1] + np.random.normal(0, 1/np.sqrt(n))
+        y[i] = y[i-1] + np.random.normal(0, 1/np.sqrt(n))
+    
+    # Plot the 2D path
+    plt.figure(figsize=(10, 10))
+    plt.plot(x, y, 'b-', alpha=0.7)
+    plt.plot(x[0], y[0], 'go', label='Start')  # Mark the start point
+    plt.plot(x[-1], y[-1], 'ro', label='End')  # Mark the end point
+    
+    plt.title(f"2D Brownian Motion Path (n={n} steps)")
+    plt.xlabel("X(t)")
+    plt.ylabel("Y(t)")
+    plt.grid(True)
+    plt.legend()
+    plt.axis('equal')  # Make the plot square to show true distances
+    plt.show()
+
+def random_walk_q8(n): 
+    # Initialize arrays for all coordinates
+    x = np.zeros(n)
+    y = np.zeros(n)
+    z = np.zeros(n)
+    
+    # Generate three independent standard Brownian motions
+    for i in range(1, n):
+        # Generate independent increments for all coordinates
+        x[i] = x[i-1] + np.random.normal(0, 1/np.sqrt(n))
+        y[i] = y[i-1] + np.random.normal(0, 1/np.sqrt(n))
+        z[i] = z[i-1] + np.random.normal(0, 1/np.sqrt(n))
+    
+    # Create 3D plot
+    fig = plt.figure(figsize=(12, 12))
+    ax = fig.add_subplot(111, projection='3d')
+    
+    # Plot the 3D path
+    ax.plot(x, y, z, 'b-', alpha=0.7)
+    ax.scatter(x[0], y[0], z[0], color='green', s=100, label='Start')
+    ax.scatter(x[-1], y[-1], z[-1], color='red', s=100, label='End')
+    
+    ax.set_title(f"3D Brownian Motion Path (n={n} steps)")
+    ax.set_xlabel("X(t)")
+    ax.set_ylabel("Y(t)")
+    ax.set_zlabel("Z(t)")
+    ax.legend()
+    
+    plt.show()
 
 if __name__ == "__main__":
     np.random.seed(123)
